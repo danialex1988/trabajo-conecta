@@ -1,70 +1,944 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>TrabajoConecta</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrabajoConecta | Bolsa de empleo</title>
+  <meta name="description" content="Bolsa de empleo para empresas, reclutadoras y candidatos. Publica vacantes, destaca anuncios y conecta talento." />
 
   <style>
+    :root {
+      --bg: #08142f;
+      --bg-2: #0d1d45;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #dbe3ee;
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --blue-soft: #eff6ff;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: Arial;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .topbar {
+      background: var(--bg);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .brand span {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav a {
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0.95;
+    }
+
+    .nav a:hover {
+      opacity: 1;
+      color: #86efac;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 14px 22px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: 0.2s ease;
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-green:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--bg);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-white:hover {
+      background: #f8fafc;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
+      color: white;
+      padding: 72px 0 54px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      color: #dbeafe;
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .hero h2 {
+      margin: 0 0 16px;
+      font-size: 54px;
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #dbeafe;
+      font-size: 18px;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .hero-card p {
+      color: #dbeafe;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .mini-box {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .mini-box strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .stats {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 4px;
+      color: white;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #dbeafe;
+    }
+
+    .section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 38px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 auto 34px;
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    .search-box {
+      max-width: 980px;
+      margin: -34px auto 0;
+      background: white;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 180px;
+      gap: 12px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .search-box input,
+    .search-box select,
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 15px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      background: white;
+    }
+
+    .search-box input:focus,
+    .search-box select:focus,
+    .form-grid input:focus,
+    .form-grid select:focus,
+    .form-grid textarea:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .job-card, .plan-card, .info-card, .form-wrap {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .job-card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .job-top {
+      padding: 22px 22px 8px;
+    }
+
+    .job-badge {
+      display: inline-block;
+      font-size: 12px;
+      background: #dcfce7;
+      color: #166534;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .job-card h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .company {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .job-meta {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .job-bottom {
+      margin-top: auto;
+      padding: 18px 22px 22px;
+      border-top: 1px solid #eef2f7;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: #f8fafc;
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .info-card {
+      padding: 28px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 12px;
+      font-size: 30px;
+    }
+
+    .info-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 0;
+    }
+
+    .bullet {
+      background: #f8fafc;
+      border: 1px solid #e5edf6;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-top: 12px;
+      color: #334155;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .plan-card {
+      padding: 28px 24px;
+      position: relative;
+    }
+
+    .plan-card.featured {
+      border: 2px solid #86efac;
+      transform: translateY(-4px);
+    }
+
+    .plan-pill {
+      display: inline-block;
+      font-size: 12px;
       background: #0f172a;
       color: white;
-      text-align: center;
-      padding: 50px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      font-weight: 700;
     }
 
-    h1 { font-size: 40px; }
+    .plan-card h3 {
+      margin: 0;
+      font-size: 24px;
+    }
 
-    button {
-      padding: 15px 25px;
-      background: #22c55e;
-      border: none;
+    .price {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 14px 0 6px;
+      color: #0f172a;
+    }
+
+    .price small {
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .plan-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 24px;
+    }
+
+    .plan-list li {
+      padding: 10px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      color: #334155;
+      font-size: 15px;
+    }
+
+    .form-wrap {
+      padding: 30px;
+    }
+
+    .form-wrap h3 {
+      margin-top: 0;
+      font-size: 32px;
+    }
+
+    .form-wrap p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .form-grid textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    .cta-band {
+      background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
       color: white;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 10px;
+      border-radius: 28px;
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+      box-shadow: var(--shadow);
     }
 
-    input, textarea {
-      width: 80%;
-      padding: 12px;
-      margin: 10px;
-      border-radius: 8px;
-      border: none;
+    .cta-band h3 {
+      margin: 0 0 8px;
+      font-size: 34px;
     }
 
-    form {
-      margin-top: 40px;
+    .cta-band p {
+      margin: 0;
+      color: #dbeafe;
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .footer {
+      background: #071127;
+      color: white;
+      padding: 34px 0;
+      margin-top: 60px;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer p {
+      margin: 0;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 100;
+      background: #25d366;
+      color: white;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 700;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.22);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .whatsapp-float:hover {
+      background: #20ba59;
+    }
+
+    .muted-center {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .two-cols,
+      .cards,
+      .plans,
+      .search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-band {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 40px;
+      }
+
+      .section-title {
+        font-size: 30px;
+      }
+
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 0;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        gap: 12px;
+      }
+
+      .whatsapp-float {
+        right: 12px;
+        bottom: 12px;
+        padding: 12px 16px;
+      }
     }
   </style>
 </head>
-
 <body>
 
-<h1>TrabajoConecta</h1>
-<p>Portal de empleo para empresas y reclutadoras</p>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <h1>TrabajoConecta</h1>
+        <span>Bolsa de empleo para empresas, reclutadoras y talento</span>
+      </div>
 
-<button onclick="alert('Próximamente disponible')">
-Publicar vacante
-</button>
+      <nav class="nav">
+        <a href="#vacantes">Vacantes</a>
+        <a href="#publicar">Publicar</a>
+        <a href="#planes">Planes</a>
+        <a href="#anuncios">Publicidad</a>
+      </nav>
+    </div>
+  </header>
 
-<h2>Publicar Vacante</h2>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">Publica, destaca y conecta talento</span>
+        <h2>Una bolsa de empleo pensada para empresas y reclutadoras.</h2>
+        <p>
+          Publica vacantes, genera visibilidad para tus plazas y conecta con candidatos.
+          TrabajoConecta te permite captar oportunidades, vender espacios destacados y construir tu propia red de reclutamiento.
+        </p>
 
-<form action="https://formsubmit.co/dani.alex1988@gmail.com" method="POST">
+        <div class="hero-actions">
+          <a href="#publicar" class="btn btn-green">Publicar vacante</a>
+          <a href="#planes" class="btn btn-white">Ver planes</a>
+        </div>
 
-  <input type="text" name="empresa" placeholder="Nombre de la empresa" required>
+        <div class="stats">
+          <div class="stat">
+            <strong>+500</strong>
+            <span>Candidatos potenciales</span>
+          </div>
+          <div class="stat">
+            <strong>+50</strong>
+            <span>Empresas objetivo</span>
+          </div>
+          <div class="stat">
+            <strong>3</strong>
+            <span>Modelos de ingreso</span>
+          </div>
+        </div>
+      </div>
 
-  <input type="text" name="puesto" placeholder="Puesto vacante" required>
+      <div class="hero-card">
+        <h3>¿Cómo gana dinero TrabajoConecta?</h3>
+        <p>Modelo simple para comenzar y luego crecer como plataforma tipo Computrabajo.</p>
 
-  <input type="text" name="salario" placeholder="Salario" required>
+        <div class="mini-box">
+          <strong>1. Publicación de vacantes</strong>
+          <span>Vacante básica gratis o económica para captar empresas.</span>
+        </div>
 
-  <textarea name="descripcion" placeholder="Descripción del puesto" required></textarea>
+        <div class="mini-box">
+          <strong>2. Vacantes destacadas</strong>
+          <span>Cobro por mejor posición, color, visibilidad y prioridad.</span>
+        </div>
 
-  <input type="email" name="email" placeholder="Correo de contacto" required>
+        <div class="mini-box">
+          <strong>3. Anuncios para empresas</strong>
+          <span>Banners, promociones y presencia de marca en la página.</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <button type="submit">Enviar vacante</button>
+  <div class="container">
+    <div class="search-box">
+      <input type="text" placeholder="Buscar por puesto, empresa o palabra clave" />
+      <select>
+        <option>Ubicación</option>
+        <option>San Salvador</option>
+        <option>Santa Ana</option>
+        <option>San Miguel</option>
+        <option>Remoto</option>
+      </select>
+      <button class="btn btn-green">Buscar empleos</button>
+    </div>
+  </div>
 
-</form>
+  <section class="section" id="vacantes">
+    <div class="container">
+      <h2 class="section-title">Vacantes destacadas</h2>
+      <p class="section-subtitle">
+        Estas vacantes se muestran como ejemplo para que tu página luzca profesional desde ya.
+        Luego podés cambiarlas manualmente o automatizarlas en una siguiente fase.
+      </p>
+
+      <div class="cards">
+        <article class="job-card">
+          <div class="job-top">
+            <span class="job-badge">Destacada</span>
+            <h3>Jefe de Operaciones</h3>
+            <div class="company">Empresa Industrial Centroamericana</div>
+            <ul class="job-meta">
+              <li>📍 San Salvador</li>
+              <li>🕒 Tiempo completo</li>
+              <li>💰 $1,200 - $1,800</li>
+              <li>🏭 Operaciones / Producción</li>
+            </ul>
+          </div>
+          <div class="job-bottom">
+            <a href="#publicar" class="btn btn-green">Quiero publicar así</a>
+            <a href="#anuncios" class="btn btn-outline">Más información</a>
+          </div>
+        </article>
+
+        <article class="job-card">
+          <div class="job-top">
+            <span class="job-badge">Urgente</span>
+            <h3>Supervisor de Producción</h3>
+            <div class="company">Grupo Manufactura SV</div>
+            <ul class="job-meta">
+              <li>📍 Santa Ana</li>
+              <li>🕒 Tiempo completo</li>
+              <li>💰 $900 - $1,300</li>
+              <li>⚙️ Producción / Planta</li>
+            </ul>
+          </div>
+          <div class="job-bottom">
+            <a href="#publicar" class="btn btn-green">Publicar vacante</a>
+            <a href="#planes" class="btn btn-outline">Ver planes</a>
+          </div>
+        </article>
+
+        <article class="job-card">
+          <div class="job-top">
+            <span class="job-badge">Premium</span>
+            <h3>Analista de Procesos</h3>
+            <div class="company">Consultora Regional</div>
+            <ul class="job-meta">
+              <li>📍 Remoto</li>
+              <li>🕒 Tiempo completo</li>
+              <li>💰 $1,000 - $1,500</li>
+              <li>📊 Mejora continua / Procesos</li>
+            </ul>
+          </div>
+          <div class="job-bottom">
+            <a href="#publicar" class="btn btn-green">Destacar vacante</a>
+            <a href="#anuncios" class="btn btn-outline">Anunciar empresa</a>
+          </div>
+        </article>
+      </div>
+
+      <p class="muted-center">Podés editar estas tarjetas cuando querás, sin tocar el resto de la página.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-cols">
+      <div class="info-card">
+        <h3>Cómo funciona el negocio</h3>
+        <p>
+          La empresa llena el formulario, a vos te llega la información por correo y luego vos negociás si desea una vacante destacada, urgente o publicidad adicional.
+          Este modelo te permite arrancar rápido sin desarrollar un sistema complejo desde el primer día.
+        </p>
+
+        <div class="bullet"><strong>Publicación básica:</strong> gratis o económica para captar clientes.</div>
+        <div class="bullet"><strong>Destacada:</strong> aparece arriba y con sello especial.</div>
+        <div class="bullet"><strong>Urgente:</strong> más visibilidad durante un periodo corto.</div>
+        <div class="bullet"><strong>Banner:</strong> promoción de marca para reclutadoras o empresas.</div>
+      </div>
+
+      <div class="info-card" id="anuncios">
+        <h3>Espacios publicitarios</h3>
+        <p>
+          También podés vender espacios a reclutadoras, academias, consultoras o marcas que quieran llegar a profesionales y personas buscando trabajo.
+        </p>
+
+        <div class="bullet"><strong>Banner principal:</strong> en portada o sobre vacantes destacadas.</div>
+        <div class="bullet"><strong>Mención premium:</strong> empresa visible en la parte superior.</div>
+        <div class="bullet"><strong>Promoción por WhatsApp:</strong> envío directo a contactos interesados.</div>
+        <div class="bullet"><strong>Plan mensual:</strong> varias vacantes + presencia de marca.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="planes">
+    <div class="container">
+      <h2 class="section-title">Planes para empresas y reclutadoras</h2>
+      <p class="section-subtitle">
+        Podés empezar regalando o cobrando poco la publicación básica, y monetizar con visibilidad, urgencia y posicionamiento.
+      </p>
+
+      <div class="plans">
+        <article class="plan-card">
+          <span class="plan-pill">Entrada</span>
+          <h3>Básico</h3>
+          <div class="price">$0 <small>o precio promocional</small></div>
+          <ul class="plan-list">
+            <li>1 publicación simple</li>
+            <li>Visibilidad estándar</li>
+            <li>Recepción por formulario</li>
+            <li>Contacto posterior por correo</li>
+          </ul>
+          <a href="#publicar" class="btn btn-outline" style="width:100%;">Empezar</a>
+        </article>
+
+        <article class="plan-card featured">
+          <span class="plan-pill">Más vendido</span>
+          <h3>Destacado</h3>
+          <div class="price">$10 <small>por vacante</small></div>
+          <ul class="plan-list">
+            <li>Vacante resaltada</li>
+            <li>Aparece arriba</li>
+            <li>Etiqueta destacada o urgente</li>
+            <li>Mayor visibilidad en portada</li>
+          </ul>
+          <a href="#publicar" class="btn btn-green" style="width:100%;">Quiero destacar mi vacante</a>
+        </article>
+
+        <article class="plan-card">
+          <span class="plan-pill">Mensual</span>
+          <h3>Premium</h3>
+          <div class="price">$30 <small>mensual</small></div>
+          <ul class="plan-list">
+            <li>Hasta 5 vacantes</li>
+            <li>Espacio de marca</li>
+            <li>Prioridad de publicación</li>
+            <li>Negociación personalizada</li>
+          </ul>
+          <a href="#publicar" class="btn btn-outline" style="width:100%;">Solicitar plan</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="publicar">
+    <div class="container">
+      <div class="form-wrap">
+        <h3>Publica tu vacante</h3>
+        <p>
+          Completa este formulario y recibirás contacto para publicar, destacar o promocionar tu vacante.
+          La información también llegará al correo para seguimiento y negociación comercial.
+        </p>
+
+        <form action="https://formsubmit.co/dani.alex1988@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Nueva vacante recibida en TrabajoConecta" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+
+          <div class="form-grid">
+            <input type="text" name="empresa" placeholder="Nombre de la empresa" required />
+            <input type="text" name="contacto" placeholder="Persona de contacto" required />
+
+            <input type="text" name="puesto" placeholder="Puesto vacante" required />
+            <input type="text" name="salario" placeholder="Salario o rango salarial" required />
+
+            <select name="tipo_de_publicacion" required>
+              <option value="">Tipo de publicación</option>
+              <option>Publicación básica</option>
+              <option>Vacante destacada</option>
+              <option>Vacante urgente</option>
+              <option>Plan premium</option>
+              <option>Publicidad / banner</option>
+            </select>
+
+            <input type="text" name="ubicacion" placeholder="Ubicación" required />
+
+            <input type="email" name="email" placeholder="Correo de contacto" required />
+            <input type="text" name="telefono" placeholder="Teléfono o WhatsApp" required />
+
+            <textarea class="full" name="descripcion" placeholder="Descripción del puesto, requisitos y detalles importantes" required></textarea>
+
+            <button type="submit" class="btn btn-green full">Enviar vacante</button>
+          </div>
+        </form>
+
+        <div class="small-note">
+          La primera vez deberás activar el formulario desde el correo. Luego, cada vacante enviada llegará directamente a tu bandeja.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-band">
+        <div>
+          <h3>¿Querés anunciar tu empresa o reclutadora?</h3>
+          <p>
+            También podés contratar espacios publicitarios, vacantes premium y promociones para tener más visibilidad dentro de TrabajoConecta.
+          </p>
+        </div>
+
+        <a class="btn btn-white" href="#publicar">Solicitar información</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h3 style="margin:0 0 10px;">TrabajoConecta</h3>
+        <p>Portal de empleo para empresas, reclutadoras y talento en crecimiento.</p>
+      </div>
+
+      <div>
+        <p><strong>Modelo de negocio:</strong> vacantes, destacados, urgentes y publicidad.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CAMBIA SOLO ESTE NÚMERO POR TU WHATSAPP REAL -->
+  <a
+    class="whatsapp-float"
+    href="https://wa.me/50378413481?text=Hola,%20quiero%20publicar%20una%20vacante%20en%20TrabajoConecta"
+    target="_blank"
+  >
+    WhatsApp
+  </a>
 
 </body>
 </html>
