@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>TrabajoConecta</title>
+
   <style>
     body {
       font-family: Arial;
@@ -11,7 +12,9 @@
       text-align: center;
       padding: 50px;
     }
+
     h1 { font-size: 40px; }
+
     button {
       padding: 15px 25px;
       background: #22c55e;
@@ -21,8 +24,21 @@
       cursor: pointer;
       border-radius: 10px;
     }
+
+    input, textarea {
+      width: 80%;
+      padding: 12px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    form {
+      margin-top: 40px;
+    }
   </style>
 </head>
+
 <body>
 
 <h1>TrabajoConecta</h1>
@@ -31,6 +47,24 @@
 <button onclick="alert('Próximamente disponible')">
 Publicar vacante
 </button>
+
+<h2>Publicar Vacante</h2>
+
+<form action="https://formsubmit.co/dani.alex1988@gmail.com" method="POST">
+
+  <input type="text" name="empresa" placeholder="Nombre de la empresa" required>
+
+  <input type="text" name="puesto" placeholder="Puesto vacante" required>
+
+  <input type="text" name="salario" placeholder="Salario" required>
+
+  <textarea name="descripcion" placeholder="Descripción del puesto" required></textarea>
+
+  <input type="email" name="email" placeholder="Correo de contacto" required>
+
+  <button type="submit">Enviar vacante</button>
+
+</form>
 
 </body>
 </html>
